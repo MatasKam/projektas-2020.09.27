@@ -50,8 +50,11 @@ int main()
 	cout << "Please enter the grade of exam: ";
 	cin >> E.egz;
 	float vidd = E.vv / E.n;
+
 	float gg = vidd * 0.4 + E.egz * 0.6;
-	cout << E.name <<" "<< E.surname << " " << gg;
+	cout << "Vardas		" << "Pavarde		" << "Galutinis (Vid.)" << std ::endl;
+	cout << "---------------------------------------------" << std :: endl;
+	cout << E.name <<"		"<< E.surname << "		 " << gg << " " ;
 
 
 	return 0;
