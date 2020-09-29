@@ -1,0 +1,90 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using std::cout;
+using std::cin;
+using std::string;
+using std::vector;
+
+struct duom {
+	string name;
+	string surname;
+	int n;
+	float vv=0;
+	int egz;
+	int nd[40];
+	int med;
+};
+
+int main()
+{
+	duom E; duom Em[5];
+	vector <duom> Ev;
+
+	cout << "Please enter name: ";
+	cin >> E.name;
+
+	cout << "Please enter surname: ";
+	cin >> E.surname;
+
+	cout << "Please enter the number of homeworks: ";
+	cin >> E.n;
+
+	int j = 0;
+	if (E.n<0)
+	{
+		cout << "the number is incorrect";
+		return 0;
+	}
+	else if (E.n == 0)
+	{
+		int r = 1;
+		while (r!=0)
+		{
+			cout << "Please enter grade of homework: ";
+			cin >> r;
+			if (10 < r < 0)
+			{
+				cout << "the number is incorrect";
+				return 0;
+			}
+			E.vv = E.vv + (float)r;
+
+			E.nd[j] = r;
+			j++;
+		}
+	}
+
+	else
+	{
+		for (int i = 0; i < E.n; i++) {
+			int r;
+			cout << "Please enter grade of " << i + 1 << " homework: ";
+			cin >> r;
+			if (10 < r < 0)
+			{
+				cout << "the number is incorrect";
+				return 0;
+			}
+			E.vv = E.vv + (float)r;
+		}
+	}
+	cout << "Please enter the grade of exam: ";
+	cin >> E.egz;
+	float vidd = E.vv / E.n;
+	std::sort(E.nd, E.nd +j);
+
+	if (j % 2 != 0)
+		E.med = (double)E.nd[j / 2];
+
+	E.med = (double)(E.nd[(j - 1) / 2] + E.nd[j / 2]) / 2.0;
+
+	float gg = vidd * 0.4 + E.egz * 0.6;
+	cout << "Vardas		" << "Pavarde		" << "Galutinis (Vid.)" << "Galutinis (Med.)" << std ::endl;
+	cout << "---------------------------------------------" << std :: endl;
+	cout << E.name <<"		"<< E.surname << "		 " << gg << "        " <<E.med;
+
+	return 0;
+}
