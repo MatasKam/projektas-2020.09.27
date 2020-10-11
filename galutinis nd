@@ -1,90 +1,117 @@
+
 #include <iostream>
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <fstream>
+#include <iomanip>
+#include <random>
+#include <numeric>
 
 using std::cout;
 using std::cin;
 using std::string;
 using std::vector;
+using std::endl;
+using std::setw;
+using std::setprecision;
+using std::fixed;
+using std::rand;
+using std::setfill;
 
-struct duom {
-	string name;
-	string surname;
-	int n;
-	float vv=0;
-	int egz;
-	int nd[40];
-	int med;
+
+
+
+
+struct duomenys {
+	string vardas ="";
+	string pavarde ="";
+	float med=0;
+	int egzp;
+	vector<int>ndp;
 };
+
+
+
+
+
 
 int main()
 {
-	duom E; duom Em[5];
-	vector <duom> Ev;
+	vector < duomenys> gaidz;
+	duomenys D; duomenys Em[5];
 
-	cout << "Please enter name: ";
-	cin >> E.name;
-
-	cout << "Please enter surname: ";
-	cin >> E.surname;
-
-	cout << "Please enter the number of homeworks: ";
-	cin >> E.n;
-
-	int j = 0;
-	if (E.n<0)
+	int z = 0;
+	while (z == 0)
 	{
-		cout << "the number is incorrect";
-		return 0;
-	}
-	else if (E.n == 0)
-	{
-		int r = 1;
-		while (r!=0)
+		cout << "Jei norite ivesti kita studenta spauskite 0 jei norite baigti paspauskite kita skaiciu"<< endl;
+		cin >> z;
+		while (cin.fail())
 		{
-			cout << "Please enter grade of homework: ";
-			cin >> r;
-			if (10 < r < 0)
-			{
-				cout << "the number is incorrect";
-				return 0;
-			}
-			E.vv = E.vv + (float)r;
-
-			E.nd[j] = r;
-			j++;
+			cout << "klaidingas ivedimas bandykite dar kart ";
+			cin.clear();
+			cin.ignore(256, '\n');
+			cin >> z;
 		}
+		if (z != 0)
+		{
+			break;
+		}
+
+		cout << "prasome ivesti studento varda: ";
+		cin >> D.vardas;
+
+		cout << "prasome ivesti pavarde: ";
+		cin >> D.pavarde;
+
+
+		int x = 0;
+		cout << "prasome ivesti studento namu darbu pazimi (jei norite baigti namu darbu ivedima spauskite 0)" << endl;
+		while (0 < x <= 10)
+		{
+			cin >> x;
+			while (cin.fail())
+			{
+				cout << "klaidingas ivedimas bandykite dar kart ";
+				cin.clear();
+				cin.ignore(256, '\n');
+				cin >> x;
+			}
+			if (x <= 0 || 10 < x)
+			{
+				break;
+			}
+			D.ndp.push_back(x);
+		}
+
+		cout << "prasome ivesti egzamino pazimi: ";
+		cin >> D.egzp;
+
+
+
+		
+		gaidz.push_back(D);
+		D.ndp.clear();
 	}
 
-	else
+	cout << setw(15) << "Vardas" << setw(20) << "Pavarde" << setw(33) << "Galutinis balas (Vid.)" << setw(25) << "Galutinis (Med.)" << endl;
+	cout << setfill('-') << setw(90) << "-" << endl;
+	float med;
+	for (auto& elementas : gaidz)
 	{
-		for (int i = 0; i < E.n; i++) {
-			int r;
-			cout << "Please enter grade of " << i + 1 << " homework: ";
-			cin >> r;
-			if (10 < r < 0)
-			{
-				cout << "the number is incorrect";
-				return 0;
-			}
-			E.vv = E.vv + (float)r;
+		float balas = (double)accumulate(elementas.ndp.begin(), elementas.ndp.end(), 0) / elementas.ndp.size() * 0.4 + elementas.egzp * 0.6;
+		
+		
+		sort(elementas.ndp.begin(), elementas.ndp.end());
+		if (elementas.ndp.size() % 2 != 0)
+		{
+			med = (double) elementas.ndp[elementas.ndp.size() / 2];
 		}
+		else
+		{
+			med = (double) (elementas.ndp[(elementas.ndp.size() - 1) / 2] + elementas.ndp[elementas.ndp.size() / 2]) / 2.0;
+		}
+		cout << setfill(' ') << setw(17) << elementas.vardas << setw(20) << elementas.pavarde << setw(14) << setprecision(2) << fixed << balas << setw(31) << setprecision(2) << fixed << med << endl;
 	}
-	cout << "Please enter the grade of exam: ";
-	cin >> E.egz;
-	float vidd = E.vv / E.n;
-	std::sort(E.nd, E.nd +j);
 
-	if (j % 2 != 0)
-		E.med = (double)E.nd[j / 2];
-
-	E.med = (double)(E.nd[(j - 1) / 2] + E.nd[j / 2]) / 2.0;
-
-	float gg = vidd * 0.4 + E.egz * 0.6;
-	cout << "Vardas		" << "Pavarde		" << "Galutinis (Vid.)" << "Galutinis (Med.)" << std ::endl;
-	cout << "---------------------------------------------" << std :: endl;
-	cout << E.name <<"		"<< E.surname << "		 " << gg << "        " <<E.med;
-
-	return 0;
 }
